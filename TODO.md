@@ -1,16 +1,19 @@
 # TODO
- For **Project Name**
+ For **Start-Project**
 ---
 
 ### Todo
 
-- [ ] Example Todo
+- [ ] Add Colors
+- [ ] Write README.md
+- [ ] Add license
 
-### In Progress..
+### In Progress.
 
-- [ ] Example Todo In Progress
-	- [ ] Example Sub-Task
+- [ ] Add Config Support
+    - [x] Add path to config
+    - [x] Add feature to stop if config not found
+    - [ ] Add a link to an example config
 
 ### Done ✓
 
-- [x] Example Todo Done

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# put this on ~/.config/start-project/ as config
+
+# ~
+# └── .config/
+#     └── start-project/
+#         └── config (Config File)
+
+
+
+# Github Username
+user="Github Username"
+
+# Path to the file where Github Personal Access Token is stored
+# Get Github Personal Access Token from here
+# https://github.com/settings/tokens
+pat=~/.config/git/ghToken
+
+# Github repo status (true/false)
+private=true
+
+# Projects Directory
+projects=~/Projects
