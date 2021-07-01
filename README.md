@@ -59,3 +59,8 @@ rm -rf start-project/
 Found some issues? [Report It](https://github.com/hoshiya4522/start-project/issues/new/choose)
 
 Want to contribue? Just go for it.. Fork it and make a PR. I'll be happy to have you on the team!
+
+## Inspiration
+
+I saw a simmilar thing in [this youtube video by Sean Hodgins](https://m.youtube.com/watch?v=sVv1oc14X1w) at 0:52 timestamp and wanted a cli just like it..
+<a href="https://m.youtube.com/watch?v=sVv1oc14X1w"><img src="https://raw.githubusercontent.com/hoshiya4522/start-project/master/assets/insvideo.png" alt="TENEX Solid State Volumetric OLED Display - EP-T0-622343EB"></a>
