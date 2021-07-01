@@ -11,6 +11,16 @@ Isn't it too much work?
 Well, you can just use `start-project`
 
 ![Start Project Preview](https://raw.githubusercontent.com/hoshiya4522/start-project/master/assets/startproject.gif)
+Start-Project creates you a project folder with stuff you may need.
+```
+Project_Dir/
+ ├── .git/
+ │     └── ...
+ ├── .gitignore
+ ├── README.md
+ ├── TODO.md
+ └── githubApiLogs.txt
+```
 
 ## Dependencies
 
