@@ -1,7 +1,9 @@
 # Start-Project
 
 <p>Start your new project hassle free</p>
+
 ---
+
 ### Idea
 When you start coding a project, you'll need to make a directory, do a git init, go to github and make a new repo, add git remote make a todo and a readme all that stuff
 Isn't it too much work?
