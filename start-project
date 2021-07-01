@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source ~/.config/start-project/config || echo "\nCan't find config file..\nQuitting.." && exit
+source ~/.config/start-project/config || (echo "\nCan't find config file..\nQuitting.." && exit)
 
 cd $projects && echo "Creating The Project : $1" && mkdir $1 && cd $1 && touch .gitignore && echo "githubApiLogs.txt" >> .gitignore && echo "Creating README.md" && touch README.md && echo "# $1" >> README.md && echo "Creating TODO.md" && touch TODO.md && printf "# TODO\n For **$1**\n---\n\n### Todo\n\n- [ ] Example Todo\n\n### In Progress..\n\n- [ ] Example Todo In Progress\n\t- [ ] Example Sub-Task\n\n### Done ✓\n\n- [x] Example Todo Done" >> TODO.md && echo "Creating Github Repository" && curl -s -u "$user:$(cat $pat)" https://api.github.com/user/repos -d "{\"name\":\"$1\", \"private\":\"$private\"}" >> githubApiLogs.txt && echo "https://github.com/$user/$1" && echo "Creating Git environment" && git init -q && echo "Syncing with project repo" && git remote add origin https://github.com/$user/$1.git && git add . && git commit -q -m "initial commit" && git push -q -u origin master
