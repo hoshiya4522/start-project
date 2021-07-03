@@ -8,6 +8,7 @@ source ~/.config/start-project/config || (echo "\nCan't find config file..\nQuit
 [ -z "$githost" ] && echo ' Please specify correctly which git host are you using on ~/.config/start-project/config' && exit 
 
 [ -z "$pat" ] && echo 'Cant find $projects please specify correctly on ~/.config/start-project/config' && exit 
+
 [ ! -L $pat ] || ( echo "Cant find $projects please specify correctly on ~/.config/start-project/config" && exit )
 
 [ -z "$projects" ] && echo 'Cant find $projects please specify correctly on ~/.config/start-project/config' && exit 
