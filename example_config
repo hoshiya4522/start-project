@@ -9,16 +9,41 @@
 
 
 
+# Git host = github or gitlab
+# Leave it blank if you dont want to back it up on cloud
+githost="github"
+# githost="gitlab"
+# githost=""
+
+
 # Github Username
-user="Github Username"
+username="YourGitUseraname"
 
-# Path to the file where Github Personal Access Token is stored
-# Get Github Personal Access Token from here
+
+# if this is turned on then you'll need to give your password whenever you start a project
+givepassword='on'
+# givepassword='off'
+# if this is urned off then you'll need to provide a Personal Access Token
+# NOTE: givepassword on is more secure
+
+
+# Path to the file where Github/Gitlab Personal Access Token is stored
+# Get your Github Personal Access Token from:
 # https://github.com/settings/tokens
-pat=~/.config/git/ghToken
+# Get your Gitlab Personal Access Token from:
+# https://gitlab.com/-/profile/personal_access_tokens
+pat=path/to/tokenFile
+# Get your personal access token, save it in a file and provide the path in this variable
+# e.g. pat=~/.config/git/ghToken
+# $ cat ~/.config/git/ghToken
+# ghp_hskarjeioejwbsidhdiiejeieHslPehVqi
 
-# Github repo status (true/false)
+
+# Github/Github repo status (true/false)
 private=true
+# this MUST be lowercase
+
 
 # Projects Directory
-projects=~/Projects
+projects=~/path/to/your/projects/directory
+# e.g. projects=~/Projects
