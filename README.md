@@ -26,32 +26,60 @@ Project_Dir/
 
 - Git
 - cURL
-- Github Account
+- GitHub/GitLab Account (Optional)
+- GitHub/GitLab Personal Access Token (Optional)
 
 ## Installation
 
-### Manual Installation
+### One Command Installation
+```sh
+curl https://raw.githubusercontent.com/hoshiya4522/start-project/master/install.sh | bash
+```
+
+### Install From Source
 ```sh
 # clone and go into repo
 git clone https://github.com/hoshiya4522/start-project.git
+
 cd start-project/
+
 # install
 sudo install -m755 start-project /usr/bin/start-project
+
 # go back and remove the download
 cd ..
 rm -rf start-project/
+
+# Make room for storing config
+mkdir $XDG_CONFIG_HOME/start-project
+
+# Get the sample config. Dont forget to edit it later
+curl -s -o $XDG_CONFIG_HOME/start-project/config https://raw.githubusercontent.com/hoshiya4522/start-project/master/example_config &&
+
+echo "start-project installed successfully. Please edit the config file of start-project at $XDG_CONFIG_HOME/start-project/config to make it work properly"
 ```
 
 ### Using termux on Andoid?
 ```sh
 # clone and go into repo
 git clone https://github.com/hoshiya4522/start-project.git
+
 cd start-project/
+
 # install
-cp start-project ~/../usr/bin
+cp start-project ~/../usr/bin/
+
 # go back and remove the download
 cd ..
 rm -rf start-project/
+
+# Make room for storing config
+mkdir $XDG_CONFIG_HOME/start-project
+
+# Get the sample config. Dont forget to edit it later
+curl -s -o $XDG_CONFIG_HOME/start-project/config https://raw.githubusercontent.com/hoshiya4522/start-project/master/example_config &&
+
+echo "start-project installed successfully. Please edit the config file of start-project at $XDG_CONFIG_HOME/start-project/config to make it work properly"
 ```
 
 ## Issues & Contribution
