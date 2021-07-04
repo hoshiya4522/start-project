@@ -2,47 +2,108 @@
 
 source ~/.config/start-project/config || (echo "\nCan't find config file..\nQuitting.." && exit)
 
-
+projectname=$1
 [ -z "$username" ] && echo 'Please specify your username on ~/.config/start-project/config' && exit 
 
-[ -z "$githost" ] && echo ' Please specify correctly which git host are you using on ~/.config/start-project/config' && exit 
+[[  $githost == "" ]] || [ -z "$githost" ] && echo ' Please specify correctly which git host are you using on ~/.config/start-project/config' && exit 
 
-[ -z "$pat" ] && echo 'Cant find $projects please specify correctly on ~/.config/start-project/config' && exit 
-
-[ ! -L $pat ] || ( echo "Cant find $projects please specify correctly on ~/.config/start-project/config" && exit )
+if [[ $givepassword == 'on' ]]
+then
+    [ -z "$pat" ] && echo 'Cant find $projects please specify correctly on ~/.config/start-project/config' && exit 
+    [ ! -L $pat ] || ( echo "Cant find $pat please specify correctly on ~/.config/start-project/config" && exit )
+fi
 
 [ -z "$projects" ] && echo 'Cant find $projects please specify correctly on ~/.config/start-project/config' && exit 
 [ ! -L $projects ] || ( echo "Cant find $projects please specify correctly on ~/.config/start-project/config" && exit )
 
+KeyboardInterrupt () {
+    echo "Keyboard Interrupt Detected"
+    echo "Initiating Fallback"
+    echo "Deleting $projectname/ Project Directory"
+    cd $projects &&
+    rm -rf $projectname &&
+    echo "Goodbye"
+    exit 1
+}
+
+fallback () {
+    echo "Initiating Fallback"
+    echo "Deleting $1/ Project Directory"
+    cd $projects &&
+    rm -rf $projectname &&
+    echo "Goodbye"
+    exit 1
+}
+
+
 cd $projects &&
 echo "Creating The Project : $1" &&
 mkdir $1 &&
+trap KeyboardInterrupt SIGINT &&
 cd $1 &&
 pwd &&
+
+echo "Creating .gitignore" &&
 touch .gitignore &&
-printf "githubApiLogs.txt\ngitlabApiLogs.txt" >> .gitignore &&
 echo "Creating README.md" &&
 touch README.md &&
-echo "# $1" >> README.md &&
 echo "Creating TODO.md" &&
-touch TODO.md && printf "# TODO\n For **$1**\n---\n\n### Todo\n\n- [ ] Example Todo\n\n### In Progress..\n\n- [ ] Example Todo In Progress\n\t- [ ] Example Sub-Task\n\n### Done ✓\n\n- [x] Example Todo Done" >> TODO.md &&
-if [[ $githost == "github" || $githost == "Github" || $githost == "GitHub" ]]
-then
-    echo "Creating Github Repository" &&
-    curl -s -u "$username:$(cat $pat)" https://api.github.com/user/repos -d "{\"name\":\"$1\", \"private\":\"$private\"}" >> githubApiLogs.txt &&
-    echo "https://github.com/$username/$1" 
-fi &&
-if [[ $githost == "gitlab" || $githost == "Gitlab" || $githost == "GitLab" ]]
-then
-    echo "Creating Gitlab Repository" &&
-    curl -H "Content-Type:application/json" https://gitlab.com/api/v4/projects?private_token=$pat -d "{ \"name\": \"test\" , \"private\":\"$private\"}" >> gitlabApiLogs.txt &&
-    echo "https://gitlab.com/$username/$1" 
-fi &&
+touch TODO.md && 
+
+printf "githubApiLogs.txt\ngitlabApiLogs.txt" >> .gitignore &&
+echo "# $1" >> README.md &&
+printf "# TODO\n For **$1**\n---\n\n### Todo\n\n- [ ] Example Todo\n\n### In Progress..\n\n- [ ] Example Todo In Progress\n\t- [ ] Example Sub-Task\n\n### Done ✓\n\n- [x] Example Todo Done" >> TODO.md &&
+
 echo "Creating Git environment" &&
 git init -q &&
+
+if [[ $githost == "github" || $githost == "Github" || $githost == "GitHub" ]]
+then
+    if [[ $givepassword == 'on' ]]
+    then
+        echo "Creating Github Repository" &&
+        curl -s -u "$username" https://api.github.com/user/repos -d "{\"name\":\"$1\", \"private\":\"$private\"}" >> githubApiLogs.txt &&
+        git remote add origin https://github.com/$username/$1.git || ( echo "Couldn't add git remote... Did you give the right password?" && exit 1)
+        echo "https://github.com/$username/$1" 
+    fi
+
+    if [[ $givepassword == 'off' ]]
+    then
+        echo "Creating Github Repository" &&
+        curl -s -u "$username:$(cat $pat)" https://api.github.com/user/repos -d "{\"name\":\"$1\", \"private\":\"$private\"}" >> githubApiLogs.txt &&
+        git remote add origin https://github.com/$username/$1.git || ( echo "Couldn't add git remote... Did you specify the right token?" && exit 1)
+        echo "https://github.com/$username/$1" 
+    fi
+fi &&
+
+if [[ $githost == "gitlab" || $githost == "Gitlab" || $githost == "GitLab" ]]
+then
+    if [[ $givepassword == 'on' ]]
+    then
+        echo "Creating Gitlab Repository" &&
+        curl -s -u "$username" https://gitlab.com/api/v4/projects -d "{ \"name\": \"test\" , \"private\":\"$private\"}"
+        git remote add origin https://gitlab.com/$username/$1.git || ( echo "Couldn't add git remote... Did you give the right password?" && exit 1)
+        echo "https://gitlab.com/$username/$1" 
+    fi
+
+    if [[ $givepassword == 'off' ]]
+    then
+        echo "Creating Gitlab Repository" &&
+        curl -H "Content-Type:application/json" https://gitlab.com/api/v4/projects?private_token=$pat -d "{ \"name\": \"test\" , \"private\":\"$private\"}" >> gitlabApiLogs.txt &&
+        echo "https://gitlab.com/$username/$1" 
+        git remote add origin https://gitlab.com/$username/$1.git || ( echo "Couldn't add git remote... Did you specify the right token?" && exit 1)
+        echo "https://gitlab.com/$username/$1" 
+    fi
+
+fi &&
+
 echo "Syncing with project repo" &&
-git remote add origin https://github.com/$username/$1.git &&
 git add . &&
 git commit -q -m "initial commit" &&
-git push -q -u origin master &&
+
+if [[ $githost != "" ]]
+then
+    git push -q -u origin master
+fi &&
+
 echo "Project Created!"
